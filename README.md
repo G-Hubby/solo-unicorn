@@ -62,12 +62,13 @@ Solo Unicorn Builder gives you 36 core structured skills, 7 add-on skills, a kno
 
 ## What You Get
 
-When you clone this project, you get:
+When you clone this project and go through this process, you get:
 
-- **43 AI-powered skills** — 36 core skills plus 7 add-ons. Not just coding: product development, sales, marketing, legal, finance, operations, code review, and more. Just describe what you need in natural language and the AI applies the right expertise. [Full list →](docs/skills-reference.md)
+- **Bootstrap your AI agent command center** — 43 AI-powered skills: 36 core skills plus 7 add-ons. Not just coding: product development, sales, marketing, legal, finance, operations, code review, and more. Just describe what you need in natural language and the AI applies the right expertise. [Full list →](docs/skills-reference.md)
 - **A private knowledge vault** — Your ideas, notes, goals, technical decisions, and learning in one place. Never checked into the public repo. Ships with `template_knowledge/` as a starter — copied to your private `my_knowledge/` on init.
 - **Starter projects you can build on** — `template_projects/` ships with example projects (like the landing page template) so you're not starting from zero. Your own work lives in `my_projects/` — build and ship real projects with AI-assisted workflows. A "project" can be anything: a blog post, a marketing research brief, a deployed web application, or an automated workflow.
 - **AI agent vendor-agnostic** — Works with any CLI coding agent: Claude Code, Gemini CLI, Kiro CLI, Codex CLI, OpenCode, or any tool that reads markdown. No vendor lock-in. [Compare agents →](docs/coding-agents.md)
+- **Local sandbox execution** — Docker Desktop turns natural-language instructions into safe, containerized execution on your own Mac or Windows machine, then carries the same container path toward production. [Why it matters →](docs/local-sandbox.md)
 
 ## Start Here
 
