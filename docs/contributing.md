@@ -46,7 +46,6 @@ Tell your AI agent:
 Shell commands:
 ```bash
 gh repo fork pingwu/solo-unicorn --clone
-cd solo-unicorn
 ```
 
 This creates your own copy on GitHub and clones it locally. The original repo is set as the `upstream` remote automatically.
@@ -58,7 +57,7 @@ Tell your AI agent:
 "Run the init unicorn setup"
 ```
 
-Or follow [INIT_UNICORN.md](../INIT_UNICORN.md) manually. This creates your personal knowledge vault and connects the skills.
+Start the AI agent from the parent workspace that contains `solo-unicorn/`, or follow [INIT_UNICORN.md](../INIT_UNICORN.md) manually. This creates your personal knowledge vault and connects the skills.
 
 ### Step 4: Create a branch for your skill
 
@@ -69,6 +68,7 @@ Tell your AI agent:
 
 Shell command:
 ```bash
+cd solo-unicorn
 git checkout -b add-skill-your-skill-name
 ```
 

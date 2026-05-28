@@ -39,7 +39,7 @@ This Code of Conduct applies within all community spaces, and also applies when 
 
 ## Enforcement
 
-Instances of abusive, harassing, or otherwise unacceptable behavior may be reported to the project maintainer at [ask@ping-ai.com](mailto:ask@ping-ai.com). All complaints will be reviewed and investigated promptly and fairly.
+Instances of abusive, harassing, or otherwise unacceptable behavior may be reported through the repository's public issue or discussion channels, or through the maintainer contact listed on the project repository. All complaints will be reviewed and investigated promptly and fairly.
 
 ## Attribution
 

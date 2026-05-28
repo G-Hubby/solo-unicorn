@@ -9,6 +9,32 @@ Run these steps once after cloning or forking the Solo Unicorn Builder project.
 
 > **Windows Users:** Clone or fork this project into your user folder (e.g., `C:\Users\YourName\Projects\unicorn`) to avoid file permission issues that require Administrator privileges.
 
+## 0. Locate the Workspace
+
+AI coding agents may start in either the cloned repo (`solo-unicorn/`) or its parent workspace. The setup uses two folders:
+
+- `UNICORN_DIR` — the cloned Solo Unicorn command-center repo.
+- `PROJECT_ROOT` — the parent workspace that holds `solo-unicorn/`, `my_knowledge/`, and `my_projects/` as siblings.
+
+Run this once in your shell before the CLI references below:
+
+```bash
+if [ -d "template_knowledge" ] && [ -d "skills" ]; then
+  UNICORN_DIR="$(pwd)"
+elif [ -d "solo-unicorn/template_knowledge" ]; then
+  UNICORN_DIR="$(pwd)/solo-unicorn"
+elif [ -d "unicorn/template_knowledge" ]; then
+  UNICORN_DIR="$(pwd)/unicorn"
+else
+  echo "Could not find the Solo Unicorn repo. cd into the repo or its parent workspace." >&2
+  exit 1
+fi
+
+PROJECT_ROOT="$(dirname "$UNICORN_DIR")"
+echo "Project root: $PROJECT_ROOT"
+echo "Unicorn repo:  $UNICORN_DIR"
+```
+
 ## 1. Create Agent Skill Symlinks
 
 **Natural Language (Recommended)**:
@@ -19,34 +45,46 @@ Run these steps once after cloning or forking the Solo Unicorn Builder project.
 ### macOS / Linux
 
 ```bash
-mkdir -p .claude && ln -s ../skills .claude/skills
-mkdir -p .agent && ln -s ../skills .agent/skills
-mkdir -p .gemini && ln -s ../skills .gemini/skills
-mkdir -p .kiro && ln -s ../skills .kiro/steering
-mkdir -p .opencode && ln -s ../skills .opencode/skills
+mkdir -p "$UNICORN_DIR/.claude" && ln -s "$UNICORN_DIR/skills" "$UNICORN_DIR/.claude/skills"
+mkdir -p "$UNICORN_DIR/.agent" && ln -s "$UNICORN_DIR/skills" "$UNICORN_DIR/.agent/skills"
+mkdir -p "$UNICORN_DIR/.gemini" && ln -s "$UNICORN_DIR/skills" "$UNICORN_DIR/.gemini/skills"
+mkdir -p "$UNICORN_DIR/.kiro" && ln -s "$UNICORN_DIR/skills" "$UNICORN_DIR/.kiro/steering"
+mkdir -p "$UNICORN_DIR/.opencode" && ln -s "$UNICORN_DIR/skills" "$UNICORN_DIR/.opencode/skills"
 ```
 
-Verify: `ls -la .claude/skills .agent/skills .gemini/skills .kiro/steering .opencode/skills`
+Verify:
+```bash
+ls -la "$UNICORN_DIR/.claude/skills" "$UNICORN_DIR/.agent/skills" "$UNICORN_DIR/.gemini/skills" "$UNICORN_DIR/.kiro/steering" "$UNICORN_DIR/.opencode/skills"
+```
 
 ### Windows
 
 Use junctions (no admin privileges required). Junctions need **absolute paths**.
 
-**PowerShell** (run from project root):
+**PowerShell** (run from the repo or its parent workspace):
 ```powershell
-$repoRoot = (Get-Location).Path
+if (Test-Path ".\template_knowledge") {
+  $unicornDir = (Get-Location).Path
+} elseif (Test-Path ".\solo-unicorn\template_knowledge") {
+  $unicornDir = Join-Path (Get-Location).Path "solo-unicorn"
+} elseif (Test-Path ".\unicorn\template_knowledge") {
+  $unicornDir = Join-Path (Get-Location).Path "unicorn"
+} else {
+  throw "Could not find the Solo Unicorn repo. cd into the repo or its parent workspace."
+}
+$projectRoot = Split-Path -Path $unicornDir -Parent
 
-New-Item -ItemType Directory -Force -Path "$repoRoot\.agent"
-New-Item -ItemType Directory -Force -Path "$repoRoot\.gemini"
-New-Item -ItemType Directory -Force -Path "$repoRoot\.claude"
-New-Item -ItemType Directory -Force -Path "$repoRoot\.kiro"
-New-Item -ItemType Directory -Force -Path "$repoRoot\.opencode"
+New-Item -ItemType Directory -Force -Path "$unicornDir\.agent"
+New-Item -ItemType Directory -Force -Path "$unicornDir\.gemini"
+New-Item -ItemType Directory -Force -Path "$unicornDir\.claude"
+New-Item -ItemType Directory -Force -Path "$unicornDir\.kiro"
+New-Item -ItemType Directory -Force -Path "$unicornDir\.opencode"
 
-cmd /c mklink /J "$repoRoot\.agent\skills" "$repoRoot\skills"
-cmd /c mklink /J "$repoRoot\.gemini\skills" "$repoRoot\skills"
-cmd /c mklink /J "$repoRoot\.claude\skills" "$repoRoot\skills"
-cmd /c mklink /J "$repoRoot\.kiro\steering" "$repoRoot\skills"
-cmd /c mklink /J "$repoRoot\.opencode\skills" "$repoRoot\skills"
+cmd /c mklink /J "$unicornDir\.agent\skills" "$unicornDir\skills"
+cmd /c mklink /J "$unicornDir\.gemini\skills" "$unicornDir\skills"
+cmd /c mklink /J "$unicornDir\.claude\skills" "$unicornDir\skills"
+cmd /c mklink /J "$unicornDir\.kiro\steering" "$unicornDir\skills"
+cmd /c mklink /J "$unicornDir\.opencode\skills" "$unicornDir\skills"
 ```
 
 > **Note:** Windows symlinks (`mklink /D`) require Administrator privileges. Junctions (`mklink /J`) work without elevation.
@@ -64,8 +102,8 @@ Copy the template knowledge into your private vault. See [UNICORN_CONSTITUTION.m
 
 **CLI Reference**:
 ```bash
-mkdir -p my_knowledge
-cp -R template_knowledge/* my_knowledge/
+mkdir -p "$PROJECT_ROOT/my_knowledge"
+cp -R "$UNICORN_DIR/template_knowledge/"* "$PROJECT_ROOT/my_knowledge/"
 ```
 
 ## 3. Create Your First Project
@@ -79,8 +117,8 @@ Copy a starter project from `template_projects/` into `my_projects/` — this is
 
 **CLI Reference**:
 ```bash
-mkdir -p my_projects
-cp -R template_projects/landing-page my_projects/landing-page
+mkdir -p "$PROJECT_ROOT/my_projects"
+cp -R "$UNICORN_DIR/template_projects/landing-page" "$PROJECT_ROOT/my_projects/landing-page"
 ```
 
 ## 4. Start the Dev Container
@@ -94,7 +132,7 @@ All dev tools live inside the container. **Never install tools or npm packages o
 
 **CLI Reference**:
 ```bash
-cd my_projects/landing-page
+cd "$PROJECT_ROOT/my_projects/landing-page"
 npm run docker:dev
 ```
 
@@ -106,14 +144,14 @@ docker compose run --rm --no-deps dev sh -c "<command>"
 
 ## 5. Version Control Your Private Directories
 
-The `my_knowledge/` and `my_projects/` directories are git-ignored by the Unicorn repo (via the `my_*` wildcard in `.gitignore`). To track your own changes, **create a separate git repo inside each one**:
+The `my_knowledge/` and `my_projects/` directories live next to the Unicorn repo. To track your own changes, **create a separate git repo inside each one**:
 
 ```bash
 # Track your knowledge vault
-cd my_knowledge && git init && git add . && git commit -m "Initial knowledge vault"
+cd "$PROJECT_ROOT/my_knowledge" && git init && git add . && git commit -m "Initial knowledge vault"
 
 # Track each project separately
-cd ../my_projects/landing-page && git init && git add . && git commit -m "Initial landing page"
+cd "$PROJECT_ROOT/my_projects/landing-page" && git init && git add . && git commit -m "Initial landing page"
 ```
 
 > **Why separate repos?** The Unicorn repo is the command center — it receives updates to skills and templates. Your knowledge and projects are *yours* and should have their own version history, pushed to your own private repositories.

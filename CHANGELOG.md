@@ -29,7 +29,7 @@ This is a major release with breaking changes. If you forked the previous versio
 | 1 | Repo renamed from `pingwu/unicorn` to `pingwu/solo-unicorn` | Remote URLs break |
 | 2 | `projects/agentic-landing-template/` moved to `template_projects/landing-page/` | Path references break |
 | 3 | `personal_knowledge/` replaced by `template_knowledge/` + `my_knowledge/` | Path references break |
-| 4 | User code now lives in `my_projects/` (git-ignored), not `projects/` | Workflow change |
+| 4 | User code now lives in sibling `my_projects/`, not `projects/` | Workflow change |
 | 5 | `my_*` wildcard in `.gitignore` ignores all `my_`-prefixed directories | Check for unintended ignores |
 | 6 | Agent symlink setup expanded from 2 to 5 agents | Must re-run init |
 | 7 | Root `AGENTS.md` replaced by `UNICORN_CONSTITUTION.md` | Agent config change |
@@ -37,21 +37,22 @@ This is a major release with breaking changes. If you forked the previous versio
 ### New Directory Layout
 
 ```
-solo-unicorn/
-  skills/                  # 36 agent skills (committed, contribute via PR)
-  template_knowledge/      # Starter knowledge vault (committed, read-only)
-  template_projects/       # Starter projects (committed, read-only)
-    landing-page/          # The landing page template (was projects/agentic-landing-template)
-  my_knowledge/            # YOUR knowledge vault (git-ignored, create your own git repo inside)
-  my_projects/             # YOUR projects (git-ignored, create your own git repo inside each)
-  docs/                    # Documentation
-  .claude/skills -> skills # Agent symlinks (created during init)
-  .gemini/skills -> skills
-  .kiro/steering -> skills
-  .opencode/skills -> skills
+workspace/
+  solo-unicorn/
+    skills/                  # 36 agent skills (committed, contribute via PR)
+    template_knowledge/      # Starter knowledge vault (committed, read-only)
+    template_projects/       # Starter projects (committed, read-only)
+      landing-page/          # The landing page template (was projects/agentic-landing-template)
+    docs/                    # Documentation
+    .claude/skills -> skills # Agent symlinks (created during init)
+    .gemini/skills -> skills
+    .kiro/steering -> skills
+    .opencode/skills -> skills
+  my_knowledge/              # YOUR knowledge vault (separate git repo)
+  my_projects/               # YOUR projects (separate git repos per project)
 ```
 
-**Key concept:** The Solo Unicorn repo is your "command center" — it receives upstream updates to skills and templates. Your personal work (`my_knowledge/`, `my_projects/`) is git-ignored and should have its own independent version control.
+**Key concept:** The Solo Unicorn repo is your "command center" — it receives upstream updates to skills and templates. Your personal work (`my_knowledge/`, `my_projects/`) lives next to the repo and should have its own independent version control.
 
 ---
 
@@ -69,29 +70,30 @@ cp -R projects ~/unicorn-backup-projects
 
 # 2. Fork and clone the new repo
 gh repo fork pingwu/solo-unicorn --clone
-cd solo-unicorn
 
 # 3. Run init (or tell your AI agent: "Run the init unicorn setup")
-mkdir -p .claude && ln -s ../skills .claude/skills
-mkdir -p .agent && ln -s ../skills .agent/skills
-mkdir -p .gemini && ln -s ../skills .gemini/skills
-mkdir -p .kiro && ln -s ../skills .kiro/steering
-mkdir -p .opencode && ln -s ../skills .opencode/skills
+UNICORN_DIR="$(pwd)/solo-unicorn"
+PROJECT_ROOT="$(pwd)"
+mkdir -p "$UNICORN_DIR/.claude" && ln -s "$UNICORN_DIR/skills" "$UNICORN_DIR/.claude/skills"
+mkdir -p "$UNICORN_DIR/.agent" && ln -s "$UNICORN_DIR/skills" "$UNICORN_DIR/.agent/skills"
+mkdir -p "$UNICORN_DIR/.gemini" && ln -s "$UNICORN_DIR/skills" "$UNICORN_DIR/.gemini/skills"
+mkdir -p "$UNICORN_DIR/.kiro" && ln -s "$UNICORN_DIR/skills" "$UNICORN_DIR/.kiro/steering"
+mkdir -p "$UNICORN_DIR/.opencode" && ln -s "$UNICORN_DIR/skills" "$UNICORN_DIR/.opencode/skills"
 
 # 4. Set up your knowledge vault
-mkdir -p my_knowledge
-cp -R template_knowledge/* my_knowledge/
-cp -R ~/unicorn-backup-knowledge/* my_knowledge/   # Restore your data
+mkdir -p "$PROJECT_ROOT/my_knowledge"
+cp -R "$UNICORN_DIR/template_knowledge/"* "$PROJECT_ROOT/my_knowledge/"
+cp -R ~/unicorn-backup-knowledge/* "$PROJECT_ROOT/my_knowledge/"   # Restore your data
 
 # 5. Set up your projects
-mkdir -p my_projects
-cp -R template_projects/landing-page my_projects/landing-page
+mkdir -p "$PROJECT_ROOT/my_projects"
+cp -R "$UNICORN_DIR/template_projects/landing-page" "$PROJECT_ROOT/my_projects/landing-page"
 # If you customized the landing page, overwrite with your version:
-# cp -R ~/unicorn-backup-projects/agentic-landing-template/* my_projects/landing-page/
+# cp -R ~/unicorn-backup-projects/agentic-landing-template/* "$PROJECT_ROOT/my_projects/landing-page/"
 
 # 6. Initialize separate git repos for your private directories
-cd my_knowledge && git init && git add . && git commit -m "Initial knowledge vault"
-cd ../my_projects/landing-page && git init && git add . && git commit -m "Initial project"
+cd "$PROJECT_ROOT/my_knowledge" && git init && git add . && git commit -m "Initial knowledge vault"
+cd "$PROJECT_ROOT/my_projects/landing-page" && git init && git add . && git commit -m "Initial project"
 ```
 
 ### Option B: In-Place Merge (if you have custom skills or docs you want to preserve)
@@ -110,27 +112,29 @@ git fetch upstream
 git merge upstream/main
 # Resolve conflicts manually
 
-# 4. After merge, set up the new structure
-mkdir -p my_knowledge
-cp -R template_knowledge/* my_knowledge/
-cp -R personal_knowledge_backup/* my_knowledge/
+# 4. After merge, set up the new sibling structure
+UNICORN_DIR="$(pwd)"
+PROJECT_ROOT="$(dirname "$UNICORN_DIR")"
+mkdir -p "$PROJECT_ROOT/my_knowledge"
+cp -R "$UNICORN_DIR/template_knowledge/"* "$PROJECT_ROOT/my_knowledge/"
+cp -R personal_knowledge_backup/* "$PROJECT_ROOT/my_knowledge/"
 
-mkdir -p my_projects
-cp -R projects_backup/agentic-landing-template my_projects/landing-page
+mkdir -p "$PROJECT_ROOT/my_projects"
+cp -R projects_backup/agentic-landing-template "$PROJECT_ROOT/my_projects/landing-page"
 
 # 5. Re-run symlink setup
-mkdir -p .claude && ln -s ../skills .claude/skills
-mkdir -p .agent && ln -s ../skills .agent/skills
-mkdir -p .gemini && ln -s ../skills .gemini/skills
-mkdir -p .kiro && ln -s ../skills .kiro/steering
-mkdir -p .opencode && ln -s ../skills .opencode/skills
+mkdir -p "$UNICORN_DIR/.claude" && ln -s "$UNICORN_DIR/skills" "$UNICORN_DIR/.claude/skills"
+mkdir -p "$UNICORN_DIR/.agent" && ln -s "$UNICORN_DIR/skills" "$UNICORN_DIR/.agent/skills"
+mkdir -p "$UNICORN_DIR/.gemini" && ln -s "$UNICORN_DIR/skills" "$UNICORN_DIR/.gemini/skills"
+mkdir -p "$UNICORN_DIR/.kiro" && ln -s "$UNICORN_DIR/skills" "$UNICORN_DIR/.kiro/steering"
+mkdir -p "$UNICORN_DIR/.opencode" && ln -s "$UNICORN_DIR/skills" "$UNICORN_DIR/.opencode/skills"
 
 # 6. Initialize separate git repos for private directories
-cd my_knowledge && git init && git add . && git commit -m "Initial knowledge vault"
-cd ../my_projects/landing-page && git init && git add . && git commit -m "Initial project"
+cd "$PROJECT_ROOT/my_knowledge" && git init && git add . && git commit -m "Initial knowledge vault"
+cd "$PROJECT_ROOT/my_projects/landing-page" && git init && git add . && git commit -m "Initial project"
 
 # 7. Clean up old directories
-rm -rf personal_knowledge personal_knowledge_backup projects projects_backup
+rm -rf "$UNICORN_DIR/personal_knowledge" "$UNICORN_DIR/personal_knowledge_backup" "$UNICORN_DIR/projects" "$UNICORN_DIR/projects_backup"
 ```
 
 ### Verify Your Migration
@@ -138,10 +142,10 @@ rm -rf personal_knowledge personal_knowledge_backup projects projects_backup
 After either option, confirm:
 
 ```bash
-ls -la .claude/skills .gemini/skills .kiro/steering .opencode/skills  # Symlinks exist
-ls my_knowledge/career/                                                 # Knowledge vault populated
-ls my_projects/                                                         # Projects directory exists
-ls skills/ | wc -l                                                      # Should show 36 skills
+ls -la "$UNICORN_DIR/.claude/skills" "$UNICORN_DIR/.gemini/skills" "$UNICORN_DIR/.kiro/steering" "$UNICORN_DIR/.opencode/skills"  # Symlinks exist
+ls "$PROJECT_ROOT/my_knowledge/career/"                                                                                                # Knowledge vault populated
+ls "$PROJECT_ROOT/my_projects/"                                                                                                        # Projects directory exists
+ls "$UNICORN_DIR/skills/" | wc -l                                                                                                      # Should show 36 skills
 ```
 
 ---

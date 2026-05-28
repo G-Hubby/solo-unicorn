@@ -159,6 +159,6 @@ MIT — use freely for personal or commercial projects.
 
 ---
 
-**Course**: CSE 651 — Software Development with Agentic AI ([CSTU.edu](https://cstu.edu))
-**Instructor**: Ping Wu
+**Course**: Software Development with Agentic AI
+**Instructor**: Course staff
 **Evolved from**: [MACA (Multi-AI-Coding-Agent)](https://github.com/pingwu/maca)

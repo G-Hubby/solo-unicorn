@@ -1,7 +1,7 @@
 # Solo-Unicorn: OpenClaw on OCI — Product Brief
 
 > Platform: https://github.com/<your-username>/solo-unicorn
-> Author: Ping Wu
+> Author: Solo Unicorn Builder contributors
 > Date: 2026-03-12
 > Status: Concept → Definition
 
@@ -10,7 +10,7 @@
 ## The Core Positioning — 養龍蝦的心法
 
 > "龍蝦裝出來以後不知道怎麼用？不知道怎麼養？Writitation 就是針對這個問題來的。"
-> — Ping Wu
+> — Solo Unicorn Builder positioning note
 
 The #1 pain point in the OpenClaw/Claw ecosystem is not installation — it's **what to do after**.
 Everyone installs the Claw. Almost no one knows how to raise it productively.
@@ -26,7 +26,7 @@ Proof: "Just Ask" (novel) was built using WRITITATION. Solo-Unicorn itself was g
 
 ## The Technical Insight
 
-Wei Li's OpenClaw targets consumers and developers with a local install model.
+OpenClaw targets consumers and developers with a local install model.
 The gap: **no zero-cost cloud-hosted path for non-technical builders and SMBs.**
 
 Solo-Unicorn fills that gap by turning OCI Always Free A1 ARM servers into a
@@ -35,9 +35,9 @@ vibe-coding launch pad, and Slack as the professional communication interface.
 
 ---
 
-## Differentiation vs. Wei Li's Approach
+## Differentiation vs. OpenClaw's Local-First Approach
 
-| Dimension | Wei Li (OpenClaw) | Solo-Unicorn |
+| Dimension | OpenClaw | Solo-Unicorn |
 |---|---|---|
 | **Hosting** | Local machine (Windows) | OCI Always Free A1 ARM ($0 cloud) |
 | **Install method** | Manual download / npm | Vibe command via Claude Code / Gemini CLI |
@@ -45,7 +45,7 @@ vibe-coding launch pad, and Slack as the professional communication interface.
 | **Target user** | Developer / AI enthusiast | Dev community builders, SMBs, influencers |
 | **Barrier** | Local Python/Node setup | Fork repo → vibe deploy |
 | **Content building** | DIY | **WRITATIO framework** |
-| **IP / platform** | OpenClaw (Wei Li's) | solo-unicorn (open source, Ping Wu) |
+| **IP / platform** | OpenClaw | solo-unicorn (open source) |
 | **Demo story** | "Install and configure" | "Fork → deploy → interact via Slack" |
 
 ---
@@ -170,7 +170,7 @@ For Slack webhook, two options:
 ## WRITITATION™ — The 心法 for 養龍蝦
 
 > Full definition: `WRITITATION.md`
-> Trademark: WRITITATION™ — Ping Wu
+> Trademark: WRITITATION™
 
 **The problem WRITITATION solves:**
 Everyone in the Claw ecosystem installs the tool. Almost no one knows how to
@@ -226,7 +226,7 @@ Solo Unicorn is the open-source implementation engine for WRITITATION.
 
 ## Comparison: Local Install vs. Solo-Unicorn OCI
 
-| Factor | Local Install (Wei Li) | Solo-Unicorn (OCI) |
+| Factor | Local Install | Solo-Unicorn (OCI) |
 |---|---|---|
 | **Cost** | $0 (local) | $0 (OCI Always Free) |
 | **Always-on** | No (laptop must be on) | Yes (cloud server) |
@@ -246,7 +246,7 @@ Solo-Unicorn changes the investment picture significantly:
 | Dimension | OpenClaw alone | + Solo-Unicorn |
 |---|---|---|
 | A. Community | 3/10 | +1 (solo-unicorn contributes new OSS project with clear harness) |
-| B. Team | 5/10 | +1 (Ping Wu's OCI + Claude Code expertise adds credibility) |
+| B. Team | 5/10 | +1 (OCI + Claude Code expertise adds credibility) |
 | C. Technical Moat | 4/10 | +2 (vibe-deploy paradigm + Slack + OCI free tier = differentiated stack) |
 | D. Commercialisation | 2/10 | +1 (SMB Slack use case has clearer paid path than developer hobbyist) |
 | E. Exit | 3/10 | 0 (unchanged at this stage) |

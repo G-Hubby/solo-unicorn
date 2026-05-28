@@ -15,10 +15,10 @@ Agent behavioral rules for Solo Unicorn Builder. This file is for AI coding agen
 
 ## 1. Head/Hand Architecture
 
-- `template_knowledge/` is a template folder; when the user first clones/forks and initializes the Solo Unicorn Builder project, the template files are copied to `my_knowledge/`.
-- `my_knowledge/` is **personal/private context**. Use it as context to create projects or generate documents. This is the user's knowledge base — information collected from the Internet, LLMs, lectures, news, original ideas, inspiration, career materials, and resumes. It is git-ignored via the `my_*` wildcard and should never be checked into the Unicorn repo. **Users should create a separate git repo inside this folder** (`cd my_knowledge && git init`) to track their own changes independently.
-- `template_projects/` ships with starter/example projects (e.g., `landing-page`). Users copy or reference these as starting points for their own work in `my_projects/`.
-- `my_projects/` is where **code changes happen**. All implementation work targets a sub-project here. Like `my_knowledge/`, it is git-ignored via the `my_*` wildcard. **Users should create a separate git repo inside each project** for version control of their own work.
+- `template_knowledge/` is a template folder; when the user first clones/forks and initializes the Solo Unicorn Builder project, the template files are copied to sibling workspace folder `../my_knowledge/`.
+- `../my_knowledge/` is **personal/private context**. Use it as context to create projects or generate documents. This is the user's knowledge base — information collected from the Internet, LLMs, lectures, news, original ideas, inspiration, career materials, and resumes. It lives outside the Unicorn repo and should never be checked into the public repo. **Users should create a separate git repo inside this folder** (`cd ../my_knowledge && git init`) to track their own changes independently.
+- `template_projects/` ships with starter/example projects (e.g., `landing-page`). Users copy or reference these as starting points for their own work in `../my_projects/`.
+- `../my_projects/` is where **code changes happen**. All implementation work targets a sub-project here. Like `../my_knowledge/`, it lives outside the Unicorn repo. **Users should create a separate git repo inside each project** for version control of their own work.
 - `skills/` contains agent-agnostic prompting patterns (36 skills).
 
 
@@ -105,10 +105,10 @@ docker compose run --rm --no-deps dev sh -c "gh pr list"
 
 | Path | Purpose |
 |------|---------|
-| `template_knowledge/` | Read-only template (copied to my_knowledge on init) |
-| `my_knowledge/` | Personal vault — ideas, resume, career materials (git-ignored) |
+| `template_knowledge/` | Read-only template (copied to `../my_knowledge/` on init) |
+| `../my_knowledge/` | Personal vault — ideas, resume, career materials |
 | `template_projects/` | Starter/example projects shipped with Solo Unicorn |
-| `my_projects/` | User's own projects — all code changes happen here |
+| `../my_projects/` | User's own projects — all code changes happen here |
 | `skills/` | Canonical agent skill definitions (36 skills) |
 
 ## 8. Troubleshooting
@@ -153,7 +153,7 @@ This constraint ensures every developer, from day one, works in the same environ
 
 ## 11. Personal Development and Knowledge Management
 
-The `my_knowledge/` directory is designated for your individual growth and learning. It is **git-ignored** and provides a space for:
+The sibling `../my_knowledge/` directory is designated for your individual growth and learning. It lives outside the public Unicorn repo and provides a space for:
 
 - **Personal Goals and Objectives**: Track your aspirations and progress.
 - **Resumes and Professional Documents**: Store and refine your career-related materials.
@@ -182,4 +182,4 @@ This content is for your personal use and development and will not be checked in
 ### File Access
 - Agents should only modify files within the project directory they're assigned to.
 - Verify symlink targets exist and contain expected content before following them.
-- Do not access files outside the repository root without explicit user instruction.
+- Do not access files outside the repository root without explicit user instruction, except the designated sibling workspace folders `../my_knowledge/` and `../my_projects/` during setup or user project work.

@@ -68,7 +68,7 @@ A community contributor's proposals are **technically solid** and **security-rel
 **Webinar fit:**
 - Live demo scenario: "Here's what happens when you run OpenClaw without securing it"
 - Drives home the security message in a visual, concrete way
-- Positions Wei Li / OpenClaw team as security-aware, not just feature-pushing
+- Positions the OpenClaw team as security-aware, not just feature-pushing
 
 **Technical Merit: High**
 - tkinter is Python stdlib — no extra dependencies, good for exe packaging

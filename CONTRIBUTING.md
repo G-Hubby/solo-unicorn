@@ -30,4 +30,4 @@ This project follows the [Contributor Covenant Code of Conduct](CODE_OF_CONDUCT.
 
 ## Questions?
 
-Open a [GitHub Discussion](https://github.com/pingwu/solo-unicorn/discussions) or reach out at [ask@ping-ai.com](mailto:ask@ping-ai.com).
+Open a [GitHub Discussion](https://github.com/pingwu/solo-unicorn/discussions).

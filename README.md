@@ -70,6 +70,16 @@ When you clone this project and go through this process, you get:
 - **AI agent vendor-agnostic** — Works with any CLI coding agent: Claude Code, Gemini CLI, Kiro CLI, Codex CLI, OpenCode, or any tool that reads markdown. No vendor lock-in. [Compare agents →](docs/coding-agents.md)
 - **Local sandbox execution** — Docker Desktop turns natural-language instructions into safe, containerized execution on your own Mac or Windows machine, then carries the same container path toward production. [Why it matters →](docs/local-sandbox.md)
 
+## Project Structure
+
+The Solo Unicorn Builder project utilizes a distinct folder structure to keep your personal work separate from the core command center, making updates and version control smoother.
+
+-   **`solo-unicorn/` (This Directory):** This is the core command center containing all the AI-powered skills, instructions, templates (`template_knowledge/`, `template_projects/`), and project configuration. It's designed to be updated frequently with new features and skills.
+-   **`my_knowledge/` (Sibling to `solo-unicorn/`):** This directory is your private knowledge vault. It's where you'll store all your personal notes, research, ideas, and accumulated context. It's initialized from `template_knowledge/` but is intended for your exclusive use and version control.
+-   **`my_projects/` (Sibling to `solo-unicorn/`):** This directory is your workspace for building and shipping projects. You'll copy starter projects from `solo-unicorn/template_projects/` into `my_projects/` and manage them with their own version control.
+
+This separation ensures that updates to the `solo-unicorn/` command center don't interfere with your ongoing projects and personal knowledge base.
+
 ## Start Here
 
 ### 1. Check Prerequisites
@@ -83,12 +93,11 @@ Before cloning, make sure you have the required tools. **[Read the Prerequisites
 ```bash
 # Clone the project
 git clone https://github.com/pingwu/solo-unicorn.git
-cd solo-unicorn
 ```
 
 ### 3. Start Your AI Coding Agent
 
-Then start your [CLI coding agent](docs/coding-agents.md) and tell it:
+Start your [CLI coding agent](docs/coding-agents.md) from the parent workspace that now contains `solo-unicorn/`, then tell it:
 **"Run the init unicorn setup"** — it will create your personal knowledge vault and connect the skills.
 
 **Your first three moves:**
@@ -156,11 +165,10 @@ This is a community project. If you've solved a real problem for real people, pa
 - [Context Engineering](docs/context-engineering.md) — Why your context shouldn't live in a vendor's data center
 - [Philosophy](docs/philosophy.md) — The Ask, Listen, Do framework
 - [Contributing](docs/contributing.md) — How to add your own skills
-- [PING BOS on YouTube](https://www.youtube.com/@pingbos) — Tutorials and walkthroughs
 
 ## Attribution
 
-- Framework based on *Just Ask* by Pinghsien Wu (to be published early March, 2026; To request a copy just ask [ask@ping-ai.com](mailto:ask@ping-ai.com?subject=Just%20Ask%20Unicorn))
+- Framework based on practical context engineering and AI-augmented knowledge work patterns.
 - Skills architecture inspired by Anthropic's [knowledge-work-plugins](https://github.com/anthropics/knowledge-work-plugins/) — an open-source framework for AI-augmented knowledge work.
 
 ## License
